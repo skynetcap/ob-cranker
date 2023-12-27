@@ -1,5 +1,5 @@
 # ob-cranker
-- Cranks SOL/USDC on OpenBook v2
+- Cranks SOL/USDC and other markets on OpenBook v2
 
 ## Requirements
 - Docker

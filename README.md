@@ -6,7 +6,10 @@
 
 ## Building
 
-`docker build .`
+- Place private key in `main/resources`
+- Set `application.endpoint` (RPC) & `application.privateKey` (file name) in application.properties
+
+- `docker build .`
 
 ## Running
 `docker run CONTAINER_NAME`

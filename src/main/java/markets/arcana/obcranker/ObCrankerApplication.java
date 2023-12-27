@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.p2p.solanaj.core.Account;
 import org.p2p.solanaj.core.PublicKey;
 import org.p2p.solanaj.rpc.RpcClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -23,6 +24,12 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ObCrankerApplication {
 
+    @Value("${application.endpoint}")
+    private String endpoint;
+
+    @Value("${application.privateKey}")
+    private String privateKeyFileName;
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     public static void main(String[] args) {
@@ -30,16 +37,15 @@ public class ObCrankerApplication {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void crankEventHeapLoop() throws InterruptedException, IOException {
-        OpenBookManager manager = new OpenBookManager(new RpcClient("https://mainnet.helius-rpc" +
-                ".com/?api-key=a778b653-bdd6-41bc-8cda-0c7377faf1dd"));
+    public void crankEventHeapLoop() {
+        OpenBookManager manager = new OpenBookManager(new RpcClient(endpoint));
 
         Account tradingAccount = null;
         try {
             tradingAccount = Account.fromJson(
-                    Resources.toString(Resources.getResource("mikeDBaJgkicqhZcoYDBB4dRwZFFJCThtWCYD7A9FAH.json"), Charset.defaultCharset()));
+                    Resources.toString(Resources.getResource(privateKeyFileName), Charset.defaultCharset()));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error reading private key: {}", e.getMessage());
         }
         Account finalTradingAccount = tradingAccount;
 

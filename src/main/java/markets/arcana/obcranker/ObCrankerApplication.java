@@ -50,41 +50,49 @@ public class ObCrankerApplication {
         Account finalTradingAccount = tradingAccount;
 
         scheduler.scheduleAtFixedRate(() -> {
-            // SOL/USDC
-            PublicKey marketId = PublicKey.valueOf("C3YPL3kYCSYKsmHcHrPWx1632GUXGqi2yMXJbfeCc57q");
-            Optional<String> transactionId = manager.consumeEvents(
-                    finalTradingAccount,
-                    marketId,
-                    8
-            );
+            try {
+                // SOL/USDC
+                PublicKey marketId = PublicKey.valueOf("CFSMrBssNG8Ud1edW59jNLnq2cwrQ9uY5cM3wXmqRJj3");
+                Optional<String> transactionId = manager.consumeEvents(
+                        finalTradingAccount,
+                        marketId,
+                        8
+                );
 
-            if (transactionId.isPresent()) {
-                log.info("Cranked events: {}", transactionId.get());
-            } else {
-                log.info("No events found to consume.");
+                if (transactionId.isPresent()) {
+                    log.info("Cranked events: {}", transactionId.get());
+                } else {
+                    log.info("No events found to consume.");
+                }
+            } catch (Exception ex) {
+                log.error("Error cranking SOL/USDC: {}", ex.getMessage(), ex);
             }
 
         }, 0, 5, TimeUnit.SECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
-            manager.cacheMarkets();
-            for (OpenBookMarket market : manager.getOpenBookMarkets()) {
-                Optional<String> transactionId = manager.consumeEvents(
-                        finalTradingAccount,
-                        market.getMarketId(),
-                        8
-                );
+            try {
+                manager.cacheMarkets();
+                for (OpenBookMarket market : manager.getOpenBookMarkets()) {
+                    Optional<String> transactionId = manager.consumeEvents(
+                            finalTradingAccount,
+                            market.getMarketId(),
+                            8
+                    );
 
-                if (transactionId.isPresent()) {
-                    log.info("Cranked events [{}]: {}", market.getName(), transactionId.get());
-                } else {
-                    log.info("No events found to consume.");
+                    if (transactionId.isPresent()) {
+                        log.info("Cranked events [{}]: {}", market.getName(), transactionId.get());
+                    } else {
+                        log.info("No events found to consume.");
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        log.error("Error consuming: {}", e.getMessage());
+                    }
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    log.error("Error consuming: {}", e.getMessage());
-                }
+            } catch (Exception ex) {
+                log.error("Error caching/cranking markets: {}", ex.getMessage(), ex);
             }
 
         }, 0, 60, TimeUnit.SECONDS);

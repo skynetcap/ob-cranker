@@ -30,7 +30,7 @@ public class ObCrankerApplication {
     @Value("${application.privateKey}")
     private String privateKeyFileName;
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(8);
 
     public static void main(String[] args) {
         SpringApplication.run(ObCrankerApplication.class, args);
@@ -38,7 +38,7 @@ public class ObCrankerApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void crankEventHeapLoop() {
-        OpenBookManager manager = new OpenBookManager(new RpcClient(endpoint));
+        OpenBookManager manager = new OpenBookManager(new RpcClient(endpoint, 5));
 
         Account tradingAccount = null;
         try {
@@ -60,9 +60,9 @@ public class ObCrankerApplication {
                 );
 
                 if (transactionId.isPresent()) {
-                    log.info("Cranked events: {}", transactionId.get());
+                    log.info("Cranked primary events: {}", transactionId.get());
                 } else {
-                    log.info("No events found to consume.");
+                    log.info("No primary events found to consume.");
                 }
             } catch (Exception ex) {
                 log.error("Error cranking SOL/USDC: {}", ex.getMessage(), ex);

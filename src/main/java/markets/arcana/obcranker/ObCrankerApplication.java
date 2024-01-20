@@ -49,6 +49,8 @@ public class ObCrankerApplication {
         }
         Account finalTradingAccount = tradingAccount;
 
+        log.info("RPC: {}", endpoint);
+
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 // SOL/USDC

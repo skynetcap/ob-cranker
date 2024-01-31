@@ -38,7 +38,7 @@ public class ObCrankerApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void crankEventHeapLoop() {
-        OpenBookManager manager = new OpenBookManager(new RpcClient(endpoint, 5));
+        OpenBookManager manager = new OpenBookManager(new RpcClient(endpoint, 10));
 
         Account tradingAccount = null;
         try {
@@ -58,7 +58,8 @@ public class ObCrankerApplication {
                 Optional<String> transactionId = manager.consumeEvents(
                         finalTradingAccount,
                         marketId,
-                        8
+                        8,
+                        "Cranked by arcana.markets \uD83E\uDDD9"
                 );
 
                 if (transactionId.isPresent()) {
@@ -79,7 +80,8 @@ public class ObCrankerApplication {
                     Optional<String> transactionId = manager.consumeEvents(
                             finalTradingAccount,
                             market.getMarketId(),
-                            8
+                            8,
+                            "Cranked by arcana.markets \uD83E\uDDD9"
                     );
 
                     if (transactionId.isPresent()) {

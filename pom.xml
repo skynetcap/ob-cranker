@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.mmorrell</groupId>
             <artifactId>openbook</artifactId>
-            <version>1.21.3</version>
+            <version>1.21.8</version>
         </dependency>
     </dependencies>
 

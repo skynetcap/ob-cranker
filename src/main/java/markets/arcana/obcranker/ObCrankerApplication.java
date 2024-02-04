@@ -90,7 +90,7 @@ public class ObCrankerApplication {
                         log.info("No events found to consume.");
                     }
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         log.error("Error consuming: {}", e.getMessage());
                     }

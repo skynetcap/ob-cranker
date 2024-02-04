@@ -49,6 +49,7 @@ public class ObCrankerApplication {
         }
         Account finalTradingAccount = tradingAccount;
 
+        log.info("Crank wallet: {}", finalTradingAccount.getPublicKey().toBase58());
         log.info("RPC: {}", endpoint);
 
         scheduler.scheduleAtFixedRate(() -> {

@@ -100,6 +100,6 @@ public class ObCrankerApplication {
                 log.error("Error caching/cranking markets: {}", ex.getMessage(), ex);
             }
 
-        }, 0, 60, TimeUnit.SECONDS);
+        }, 0, 30, TimeUnit.SECONDS);
     }
 }

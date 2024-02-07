@@ -31,6 +31,17 @@
             <groupId>com.mmorrell</groupId>
             <artifactId>openbook</artifactId>
             <version>1.21.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mmorrell</groupId>
+                    <artifactId>solanaj</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.mmorrell</groupId>
+            <artifactId>solanaj</artifactId>
+            <version>1.17.2</version>
         </dependency>
     </dependencies>
 

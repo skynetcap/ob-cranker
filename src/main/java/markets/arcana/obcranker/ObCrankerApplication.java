@@ -72,7 +72,7 @@ public class ObCrankerApplication {
                 log.error("Error cranking SOL/USDC: {}", ex.getMessage(), ex);
             }
 
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 0, 2500, TimeUnit.MILLISECONDS);
 
         scheduler.scheduleAtFixedRate(() -> {
             try {

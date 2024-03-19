@@ -30,6 +30,9 @@ public class ObCrankerApplication {
     @Value("${application.privateKey}")
     private String privateKeyFileName;
 
+    @Value("${application.solUsdcPriorityFee}")
+    private int solUsdcPriorityFee;
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(8);
 
     public static void main(String[] args) {
@@ -60,7 +63,8 @@ public class ObCrankerApplication {
                         finalTradingAccount,
                         marketId,
                         8,
-                        "Cranked by arcana.markets \uD83E\uDDD9"
+                        "Cranked by arcana.markets \uD83E\uDDD9",
+                        solUsdcPriorityFee
                 );
 
                 if (transactionId.isPresent()) {

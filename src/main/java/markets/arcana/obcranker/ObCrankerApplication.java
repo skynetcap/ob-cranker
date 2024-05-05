@@ -82,12 +82,22 @@ public class ObCrankerApplication {
             try {
                 manager.cacheMarkets();
                 for (OpenBookMarket market : manager.getOpenBookMarkets()) {
-                    Optional<String> transactionId = manager.consumeEvents(
-                            finalTradingAccount,
-                            market.getMarketId(),
-                            8,
-                            "Cranked by arcana.markets \uD83E\uDDD9"
-                    );
+                    Optional<String> transactionId = Optional.empty();
+                    try {
+                        transactionId = manager.consumeEvents(
+                                finalTradingAccount,
+                                market.getMarketId(),
+                                8,
+                                "Cranked by arcana.markets \uD83E\uDDD9"
+                        );
+                    } catch (Exception ex) {
+                        log.error(
+                                "Error cranking market [{}]: {}",
+                                market.getMarketId().toBase58(),
+                                ex.getMessage(),
+                                ex
+                        );
+                    }
 
                     if (transactionId.isPresent()) {
                         log.info("Cranked events [{}]: {}", market.getName(), transactionId.get());
